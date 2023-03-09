@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WordPress on Sanae&#39;s blog</title>
+    <link>https://blog.sanae.im/tags/wordpress/</link>
+    <description>Recent content in WordPress on Sanae&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 17 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.sanae.im/tags/wordpress/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 搭建 WordPress</title>
+      <link>https://blog.sanae.im/posts/docker-compose-setup-wordpress-and-mariadb/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/posts/docker-compose-setup-wordpress-and-mariadb/</guid>
+      <description>前言 大部分用 Docker 搭建 WordPress 的方法都是用 MySQL 数据库。
+MairaDB 是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可。 MariaDB 的目的是完全兼容 MySQL，而且 MairaDB 的性能完全不输给 MySQL。
+对于大多数应用程序和目的，尤其是 WordPress，用 MariaDB 替换 MySQL 基本上不存在兼容问题。
+所以 WordPress 什么时候能原生支持 ProgreSQL
+为什么开始使用 Docker 搭建 WordPress 优点：
+搭建、升级方便，命令简单，不用自行配置环境。 迁移和备份操作方便。 缺点：
+修改相关配置不够方便 需要学习 Docker 相关命令 准备工作 需要有一台 VPS，本文选择的系统是 Debian11 需要准备一个域名，建议长期持有，并配置好解析 安装 Docker 和 Docker-compose 这里第一步使用了官方提供的一键脚本安装 Docker。如果你对此感到不放心，请通过官网步骤自行安装。
+$ bash &amp;lt;(curl -L https://get.docker.com/) $ sudo curl -L &amp;#34;https://github.com/docker/compose/releases/download/latest/docker-compose-$(uname -s)-$(uname -m)&amp;#34; -o /usr/local/bin/docker-compose $ sudo chmod +x /usr/local/bin/docker-compose 拉取镜像 $ mkdir -p /home/WordPress $ cd /home/WordPress 然后用你习惯的编辑器创建 docker-compose.</description>
+    </item>
+    
+  </channel>
+</rss>

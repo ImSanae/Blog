@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Sanae&#39;s blog</title>
+    <link>https://blog.sanae.im/tags/</link>
+    <description>Recent content in Tags on Sanae&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.sanae.im/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker</title>
+      <link>https://blog.sanae.im/tags/docker/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mail</title>
+      <link>https://blog.sanae.im/tags/mail/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/tags/mail/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MariaDB</title>
+      <link>https://blog.sanae.im/tags/mariadb/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/tags/mariadb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NextCloud</title>
+      <link>https://blog.sanae.im/tags/nextcloud/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/tags/nextcloud/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ProgreSQL</title>
+      <link>https://blog.sanae.im/tags/progresql/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/tags/progresql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WordPress</title>
+      <link>https://blog.sanae.im/tags/wordpress/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/tags/wordpress/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

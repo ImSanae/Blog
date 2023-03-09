@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ProgreSQL on Sanae&#39;s blog</title>
+    <link>https://blog.sanae.im/tags/progresql/</link>
+    <description>Recent content in ProgreSQL on Sanae&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 17 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.sanae.im/tags/progresql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 搭建 NextCloud</title>
+      <link>https://blog.sanae.im/posts/docker-compose-setup-nextcloud/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/posts/docker-compose-setup-nextcloud/</guid>
+      <description>前言 Nextcloud is functionally similar to Dropbox, Office 365 or Google Drive. It can be hosted in the cloud or on-premises. It is scalable from home office solutions based on the low cost Raspberry Pi all the way through to full sized data centre solutions that support millions of users. &amp;mdash;&amp;ndash;PrivacyTools
+官方 Demo
+优势：
+100% 开源 全平台客户端支持 高速 (取决于连接速度上限) 私密 (自己全权管理) 稳定 (除非 VPS 服务商跑路) 全平台客户端支持 缺点：
+服务器硬盘容量一般不大 (可挂载外部储存以扩大储存空间) 准备工作 需要有一台 VPS，本文选择的系统是 Debian11 需要准备一个域名，建议长期持有，并配置好解析 安装 Docker 和 Docker-compose 这里第一步使用了官方提供的一键脚本安装 Docker。如果你对此感到不放心，请通过官网步骤自行安装。</description>
+    </item>
+    
+  </channel>
+</rss>

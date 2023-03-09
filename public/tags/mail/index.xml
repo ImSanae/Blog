@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mail on Sanae&#39;s blog</title>
+    <link>https://blog.sanae.im/tags/mail/</link>
+    <description>Recent content in Mail on Sanae&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.sanae.im/tags/mail/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mailu 搭建邮局的不完全指南</title>
+      <link>https://blog.sanae.im/posts/mail-hosting-with-mailu/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/posts/mail-hosting-with-mailu/</guid>
+      <description>Mailu 是一个开源的邮件服务，需要使用 Docker 安装。
+系统要求 Mailu 基于 Docker，所以几乎可以在任何发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，并拥有独立的 IP 地址。
+您需要确保您 vps 的 25 端口是开放的，可以使用 Telnet 命令测试是否开放：
+$ telnet smtp.aol.com 25 如果出现以下信息，则说明 25 端口是开放的：
+Trying 87.248.97.31... Connected to smtp.aol.g03.yahoodns.net. Escape character is &amp;#39;^]&amp;#39;. 220 smtp.mail.yahoo.com ESMTP ready 否则说明您的 25 端口被服务商屏蔽，您需要向服务器申请开放 25 端口（建议在申请前查询 IP 是否被列入黑名单，被列入黑名单的 IP 发件容易进入垃圾箱）
+本文使用的系统为 Debian11。
+安装 Mailu 设置 DNS 记录 DNS 记录的设置分为两部分，此部分为搭建邮局前设置（请将域名替换为您自己的域名）
+将域名 mail.sanae.im 设置 A / AAAA 记录，解析到服务器 IP 将 sanae.im 设置 MX 记录，优先级为 10，解析值为 mail.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,44 @@
+baseURL = 'https://blog.sanae.im/'
+languageCode = 'zh-cn'
+defaultContentLanguage = 'zh-cn'
+enableEmoji = true
+title = "Sanae's blog"
+theme = "m10c"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+    weight = 2
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 3
+  [[menu.main]]
+   identifier = "links"
+   name = "links"
+   url = "/links/"
+   weight = 4
+
+
+[params]
+  author = "Kotiya Sanae"
+  description = "Maybe I can cause miracles to occur"
+  menu_item_separator = " - "
+  [[params.home.profile]]
+    avatarURL = "/static/avatar.jpg"
+  [[params.social]]
+    icon = "mail"
+    name = "Email"
+    url = "mailto:hi@sanae.im"
+  [[params.social]]
+    icon = "mastodon"
+    name = "Mastodon"
+    url = "https://nekos.us/@Sanae"

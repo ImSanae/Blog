@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abouts on Sanae&#39;s blog</title>
+    <link>https://blog.sanae233.net/about/</link>
+    <description>Recent content in Abouts on Sanae&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 11 Nov 2022 02:00:00 +0000</lastBuildDate><atom:link href="https://blog.sanae233.net/about/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于</title>
+      <link>https://blog.sanae233.net/about/about/</link>
+      <pubDate>Fri, 11 Nov 2022 02:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae233.net/about/about/</guid>
+      <description>关于早苗 这里是 东风谷早苗 Sanae Kochiya.你可以称呼我为早苗.
+这个名字取自东方 Project（東方プロジェクト），在其设定中，她的能力是引发奇迹程度 （奇迹和魔法都是并存的）.
+去年 10 月原来用户名相关账户的登录凭证搞丢了 (是笨蛋) 以及想换个新的身份才取的 (知道前 ID 的就不要乱传啦).
+技能 对不少东西都有所了解但不是很深入.
+计算机 运维 (干过把数据库备份搞丢的重大事故) 各种小技能 前 OIer,初中到高中的一段时间自学过 C++,并在初三已经高中参加 OI.但由于过于摸鱼并没有取得过好成绩,但在学习 OI 的过程中接触过不少大佬以及学习到了许多东西.以及那段时间,自己给电脑装了 Ubuntu,Manjaro,Fedora,Debian,ArchLinux 等 Linux 发行版(按时间排序,现在是 ArchLinux 用户),在反复折腾的过程以及摸鱼学到了一些 OI 以外的东西.最终的 2022 NOIP(CSP 由于疫情原因取消)因为忘记加优化算是以爆零退役结束,但这段时间的确让我成长很多.
+大概是从初二的时候开始折腾服务器,最初选择的是 Vultr 的服务器但让别人帮忙 (算是给钱不干事), 之后就是自己折腾 (用 Ubuntu 20.04 Server 搭建过 WordPress 和 Typecho 的博客,以及 Mastodon),在配置服务器的时候也学习到了一些运维的知识.现在选择的是 Contabo Cloud VPS S (用 Debian11 系统搭建了一些自己的服务和 Mastodon,欢迎关注我的账号).
+感兴趣的方面 &amp;amp; 想做的事情 总之有很多 计算机网络(DN42 ASN 4242420289) 自建 开发(Go,Rust) 关于本站 使用的头像出在 Pixiv 但当时并没有记录下插画 ID.</description>
+    </item>
+    
+  </channel>
+</rss>

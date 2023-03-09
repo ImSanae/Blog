@@ -1,0 +1,21 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: build
+  image: plugins/hugo
+  settings:
+    hugo_version: 0.111.0
+  commands:
+  - hugo -D
+
+- name: Push-to-Cloudflare-Pages
+  image: node:latest
+  commands:
+    - npx wrangler pages publish public/ --project-name=blog
+  environment:
+    CLOUDFLARE_ACCOUNT_ID:
+      from_secret: CLOUDFLARE_ACCOUNT_ID
+    CLOUDFLARE_API_TOKEN:
+      from_secret: CLOUDFLARE_API_TOKEN

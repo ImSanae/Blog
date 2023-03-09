@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sanae&#39;s blog</title>
+    <link>https://blog.sanae.im/</link>
+    <description>Recent content on Sanae&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.sanae.im/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mailu 搭建邮局的不完全指南</title>
+      <link>https://blog.sanae.im/posts/mail-hosting-with-mailu/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/posts/mail-hosting-with-mailu/</guid>
+      <description>Mailu 是一个开源的邮件服务，需要使用 Docker 安装。
+系统要求 Mailu 基于 Docker，所以几乎可以在任何发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，并拥有独立的 IP 地址。
+您需要确保您 vps 的 25 端口是开放的，可以使用 Telnet 命令测试是否开放：
+$ telnet smtp.aol.com 25 如果出现以下信息，则说明 25 端口是开放的：
+Trying 87.248.97.31... Connected to smtp.aol.g03.yahoodns.net. Escape character is &amp;#39;^]&amp;#39;. 220 smtp.mail.yahoo.com ESMTP ready 否则说明您的 25 端口被服务商屏蔽，您需要向服务器申请开放 25 端口（建议在申请前查询 IP 是否被列入黑名单，被列入黑名单的 IP 发件容易进入垃圾箱）
+本文使用的系统为 Debian11。
+安装 Mailu 设置 DNS 记录 DNS 记录的设置分为两部分，此部分为搭建邮局前设置（请将域名替换为您自己的域名）
+将域名 mail.sanae.im 设置 A / AAAA 记录，解析到服务器 IP 将 sanae.im 设置 MX 记录，优先级为 10，解析值为 mail.</description>
+    </item>
+    
+    <item>
+      <title>Docker 搭建 NextCloud</title>
+      <link>https://blog.sanae.im/posts/docker-compose-setup-nextcloud/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/posts/docker-compose-setup-nextcloud/</guid>
+      <description>前言 Nextcloud is functionally similar to Dropbox, Office 365 or Google Drive. It can be hosted in the cloud or on-premises. It is scalable from home office solutions based on the low cost Raspberry Pi all the way through to full sized data centre solutions that support millions of users. &amp;mdash;&amp;ndash;PrivacyTools
+官方 Demo
+优势：
+100% 开源 全平台客户端支持 高速 (取决于连接速度上限) 私密 (自己全权管理) 稳定 (除非 VPS 服务商跑路) 全平台客户端支持 缺点：
+服务器硬盘容量一般不大 (可挂载外部储存以扩大储存空间) 准备工作 需要有一台 VPS，本文选择的系统是 Debian11 需要准备一个域名，建议长期持有，并配置好解析 安装 Docker 和 Docker-compose 这里第一步使用了官方提供的一键脚本安装 Docker。如果你对此感到不放心，请通过官网步骤自行安装。</description>
+    </item>
+    
+    <item>
+      <title>Docker 搭建 WordPress</title>
+      <link>https://blog.sanae.im/posts/docker-compose-setup-wordpress-and-mariadb/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/posts/docker-compose-setup-wordpress-and-mariadb/</guid>
+      <description>前言 大部分用 Docker 搭建 WordPress 的方法都是用 MySQL 数据库。
+MairaDB 是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可。 MariaDB 的目的是完全兼容 MySQL，而且 MairaDB 的性能完全不输给 MySQL。
+对于大多数应用程序和目的，尤其是 WordPress，用 MariaDB 替换 MySQL 基本上不存在兼容问题。
+所以 WordPress 什么时候能原生支持 ProgreSQL
+为什么开始使用 Docker 搭建 WordPress 优点：
+搭建、升级方便，命令简单，不用自行配置环境。 迁移和备份操作方便。 缺点：
+修改相关配置不够方便 需要学习 Docker 相关命令 准备工作 需要有一台 VPS，本文选择的系统是 Debian11 需要准备一个域名，建议长期持有，并配置好解析 安装 Docker 和 Docker-compose 这里第一步使用了官方提供的一键脚本安装 Docker。如果你对此感到不放心，请通过官网步骤自行安装。
+$ bash &amp;lt;(curl -L https://get.docker.com/) $ sudo curl -L &amp;#34;https://github.com/docker/compose/releases/download/latest/docker-compose-$(uname -s)-$(uname -m)&amp;#34; -o /usr/local/bin/docker-compose $ sudo chmod +x /usr/local/bin/docker-compose 拉取镜像 $ mkdir -p /home/WordPress $ cd /home/WordPress 然后用你习惯的编辑器创建 docker-compose.</description>
+    </item>
+    
+    <item>
+      <title>关于</title>
+      <link>https://blog.sanae.im/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.sanae.im/about/</guid>
+      <description>关于早苗 这里是 东风谷早苗 Sanae Kochiya（原来记成了 Kotiya Sanae）。你可以称呼我为早苗。
+这个名字取自东方 Project（東方プロジェクト），在其设定中，她的能力是引发奇迹程度 （奇迹和魔法都是并存的）。
+技能 对不少东西都有所了解但不是很深入。
+计算机 运维 (但干过数据库备份搞丢的重大事故) 各种小技能 前 OIer，初中到高中的一段时间自学过 C++，并在初三和高中参加 OI。但由于过于摸鱼并没有取得过好成绩，但在学习 OI 的过程中接触过不少大佬以及学习到了许多东西。以及那段时间，自己给电脑装了 Ubuntu，Manjaro，Fedora，Debian，ArchLinux 等 Linux 发行版(按时间排序，现在是 ArchLinux 用户)，在反复折腾的过程以及摸鱼学到了一些 OI 以外的东西。最终 2022 NOIP(CSP 由于疫情原因取消)因为忘记加优化以爆零退役结束，感谢所有在这段时间帮助过我的人，这段时间让我成长了很多。
+大概是从初二的时候开始折腾服务器，最初选择的是 Vultr 的 1H1G 服务器，然后就是自己折腾(用 Ubuntu 20.04 Server 搭建过 WordPress 和 Typecho 的博客，以及 Mastodon)，在配置服务器的时候也学习到了一些运维的知识。现在选择的是 Contabo Cloud VPS S (以 Debian11 系统搭建了一些自己的服务和 Mastodon，欢迎关注我的 Mastodon 账号)。
+感兴趣的方面 &amp;amp; 想做的事情 总之有很多 自建服务 开发(Go,Rust) 支持 Open Source 关于本站 使用的头像出在 Pixiv 但当时并没有记录下插画 ID。</description>
+    </item>
+    
+  </channel>
+</rss>
