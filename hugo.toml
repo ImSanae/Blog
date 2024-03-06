@@ -1,0 +1,64 @@
+baseURL = 'https://blog.sanae.im'
+title = "Sanae's Blog"
+paginate = 10
+theme = "m10c"
+languageCode = 'zh'
+DefaultContentLanguage = 'zh'
+hasCJKLanguage = 'true'
+enableRobotsTXT = 'true'
+buildDrafts = 'false'
+buildFuture = 'false'
+buildExpired = 'false'
+enableEmoji = 'true'
+enableGitInfo = 'false'
+
+[params]
+  env = 'production'
+  title = "Sanae's Blog"
+  author = 'Sanae'
+  description = "Maybe I can cause miracles to occur"
+  DateFormat = '2006-01-01'
+  defaultTheme = 'auto'
+  disableThemeToggle = 'false'
+  ShowReadingTime = 'true'
+  ShowShareButtons = 'true'
+  ShowPostNavLinks = 'true'
+  ShowCodeCopyButtons = 'true'
+  ShowWordCount = 'true'
+  ShowRssButtonInSectionTermList = 'true'
+  UseHugoToc = 'true'
+  disableSpecial1stPost = 'false'
+  disableScrollToTop = 'false'
+  hidemeta = 'false'
+  hideSummary = 'true'
+
+  [[params.social]]
+    icon = "mail"
+    name = "Email"
+    url = "mailto:hi@sanae.im"
+  [[params.social]]
+     icon = "firefish"
+     name = "Firefish"
+     url = "https://f.sanae.im/@hi"
+  [[params.social]]
+    icon = "github"
+    name = "Github"
+    url = "https://github.com/ImSanae"
+  [[params.social]]
+    icon = "matrix"
+    name = "Matrix"
+    url = "https://matrix.to/#/@isanae:mozilla.org"
+
+[menu]
+  [[menu.main]]
+    identifier = "About"
+    name = "About"
+    url = "/about/"
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags/"
+  [[menu.main]]
+    identifier = "privacy"
+    name = "Privacy"
+    url = "https://sanae.im/privacy/"

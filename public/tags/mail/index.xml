@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mail on Sanae&#39;s Blog</title>
+    <link>http://localhost:1313/tags/mail/</link>
+    <description>Recent content in Mail on Sanae&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 03 Feb 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/mail/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mailu 搭建邮局的不完全指南</title>
+      <link>http://localhost:1313/posts/mail-hosting-with-mailu/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mail-hosting-with-mailu/</guid>
+      <description>Mailu 是一个开源的邮件服务，需要使用 Docker 安装。 系统要求 Mailu 基于 Docker，所以几乎可以在所有发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，</description>
+    </item>
+  </channel>
+</rss>

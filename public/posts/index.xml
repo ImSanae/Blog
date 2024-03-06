@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Sanae&#39;s Blog</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on Sanae&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Thu, 08 Jun 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 搭建 Misskey 实例</title>
+      <link>http://localhost:1313/posts/docker-misskey/</link>
+      <pubDate>Thu, 08 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/docker-misskey/</guid>
+      <description>本文中使用的 Misskey 版本号为 v13 前言 本文是笔者写的自建 Misskey 踩坑记录指南。之前搭建过 Mastodon 但是 Mastodon 的配置和服务器要求过高，出于经济和实用方面考虑而放弃了 Mas</description>
+    </item>
+    <item>
+      <title>Mailu 搭建邮局的不完全指南</title>
+      <link>http://localhost:1313/posts/mail-hosting-with-mailu/</link>
+      <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/mail-hosting-with-mailu/</guid>
+      <description>Mailu 是一个开源的邮件服务，需要使用 Docker 安装。 系统要求 Mailu 基于 Docker，所以几乎可以在所有发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，</description>
+    </item>
+    <item>
+      <title>Docker 搭建 NextCloud</title>
+      <link>http://localhost:1313/posts/docker-nextcloud/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/docker-nextcloud/</guid>
+      <description>前言 Nextcloud is functionally similar to Dropbox, Office 365 or Google Drive. It can be hosted in the cloud or on-premises. It is scalable from home office solutions based on the low cost Raspberry Pi all the way through to full sized data centre solutions that support millions of users. &amp;mdash;&amp;ndash;PrivacyTools 官方 Demo 优势： 100% 开源 全平台客户端支持 高</description>
+    </item>
+    <item>
+      <title>Docker 搭建 WordPress</title>
+      <link>http://localhost:1313/posts/docker-wordpress-with-mariadb/</link>
+      <pubDate>Tue, 17 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/docker-wordpress-with-mariadb/</guid>
+      <description>前言 大部分用 Docker 搭建 WordPress 的方法都是用 MySQL 数据库。 MairaDB 是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可。 MariaDB 的目的是完全兼容 MySQL，而且 MairaDB 的性能</description>
+    </item>
+  </channel>
+</rss>

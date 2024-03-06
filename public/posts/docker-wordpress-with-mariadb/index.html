@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <title>Docker 搭建 WordPress // Sanae&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.123.7">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Sanae" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Docker 搭建 WordPress"/>
+<meta name="twitter:description" content="前言 大部分用 Docker 搭建 WordPress 的方法都是用 MySQL 数据库。 MairaDB 是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可。 MariaDB 的目的是完全兼容 MySQL，而且 MairaDB 的性能"/>
+
+    <meta property="og:title" content="Docker 搭建 WordPress" />
+<meta property="og:description" content="前言 大部分用 Docker 搭建 WordPress 的方法都是用 MySQL 数据库。 MairaDB 是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可。 MariaDB 的目的是完全兼容 MySQL，而且 MairaDB 的性能" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/docker-wordpress-with-mariadb/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-01-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-01-17T00:00:00+00:00" /><meta property="og:site_name" content="Sanae&#39;s Blog" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="http://localhost:1313/"><img class="app-header-avatar" src="/avatar.jpg" alt="Sanae" /></a>
+      <span class="app-header-title">Sanae&#39;s Blog</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             - 
+          
+          <a class="app-header-menu-item" href="https://sanae.im/privacy/">Privacy</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p>Maybe I can cause miracles to occur</p>
+      <div class="app-header-social">
+        
+          <a href="mailto:hi@sanae.im" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Mail.Ru</title><path d="M15.61 12c0 1.99-1.62 3.61-3.61 3.61-1.99 0-3.61-1.62-3.61-3.61 0-1.99 1.62-3.61 3.61-3.61 1.99 0 3.61 1.62 3.61 3.61M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12c2.424 0 4.761-.722 6.76-2.087l.034-.024-1.617-1.879-.027.017A9.494 9.494 0 0 1 12 21.54c-5.26 0-9.54-4.28-9.54-9.54 0-5.26 4.28-9.54 9.54-9.54 5.26 0 9.54 4.28 9.54 9.54a9.63 9.63 0 0 1-.225 2.05c-.301 1.239-1.169 1.618-1.82 1.568-.654-.053-1.42-.52-1.426-1.661V12A6.076 6.076 0 0 0 12 5.93 6.076 6.076 0 0 0 5.93 12 6.076 6.076 0 0 0 12 18.07a6.02 6.02 0 0 0 4.3-1.792 3.9 3.9 0 0 0 3.32 1.805c.874 0 1.74-.292 2.437-.821.719-.547 1.256-1.336 1.553-2.285.047-.154.135-.504.135-.507l.002-.013c.175-.76.253-1.52.253-2.457 0-6.617-5.383-12-12-12"/></svg>
+</span>
+          </a>
+        
+          <a href="https://f.sanae.im/@hi" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg fill="#F07A5B" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Firefish</title><path d="M16.771 0c-.68-.016-1.342.507-1.342 1.304V7.27c0 .719.582 1.301 1.3 1.301h5.967c1.16 0 1.74-1.401.92-2.22L17.65.383a1.275 1.275 0 0 0-.879-.383ZM6.573.106c-.672-.017-1.326.5-1.326 1.287v5.892c0 .71.575 1.285 1.285 1.285h5.892c1.145 0 1.718-1.384.908-2.194L7.44.484a1.259 1.259 0 0 0-.867-.379ZM1.286 10.287c-.71 0-1.286.576-1.286 1.286v11.142C0 23.425.576 24 1.286 24h11.143c.71 0 1.285-.575 1.285-1.285V11.573c0-.71-.575-1.286-1.285-1.286zm15.485 0c-.68-.017-1.342.507-1.342 1.304v5.966c0 .718.582 1.3 1.3 1.3h5.967c1.16 0 1.74-1.4.92-2.22L17.65 10.67a1.275 1.275 0 0 0-.879-.384zM3.43 17.144a1.714 1.714 0 1 1 0 3.428 1.714 1.714 0 0 1 0-3.428zm4.285 0a1.714 1.714 0 1 1 0 3.428 1.714 1.714 0 0 1 0-3.428z"/></svg>
+</span>
+          </a>
+        
+          <a href="https://github.com/ImSanae" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg fill="#181717" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+</span>
+          </a>
+        
+          <a href="https://matrix.to/#/@isanae:mozilla.org" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg fill="#000000" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Matrix</title><path d="M.632.55v22.9H2.28V24H0V0h2.28v.55zm7.043 7.26v1.157h.033c.309-.443.683-.784 1.117-1.024.433-.245.936-.365 1.5-.365.54 0 1.033.107 1.481.314.448.208.785.582 1.02 1.108.254-.374.6-.706 1.034-.992.434-.287.95-.43 1.546-.43.453 0 .872.056 1.26.167.388.11.716.286.993.53.276.245.489.559.646.951.152.392.23.863.23 1.417v5.728h-2.349V11.52c0-.286-.01-.559-.032-.812a1.755 1.755 0 0 0-.18-.66 1.106 1.106 0 0 0-.438-.448c-.194-.11-.457-.166-.785-.166-.332 0-.6.064-.803.189a1.38 1.38 0 0 0-.48.499 1.946 1.946 0 0 0-.231.696 5.56 5.56 0 0 0-.06.785v4.768h-2.35v-4.8c0-.254-.004-.503-.018-.752a2.074 2.074 0 0 0-.143-.688 1.052 1.052 0 0 0-.415-.503c-.194-.125-.476-.19-.854-.19-.111 0-.259.024-.439.074-.18.051-.36.143-.53.282-.171.138-.319.337-.439.595-.12.259-.18.6-.18 1.02v4.966H5.46V7.81zm15.693 15.64V.55H21.72V0H24v24h-2.28v-.55z"/></svg>
+</span>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Docker 搭建 WordPress</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-svglink">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+          Jan 17, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-svglink">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+          2 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-svglink">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+              <a class="tag" href="http://localhost:1313/tags/docker/">Docker</a>
+              <a class="tag" href="http://localhost:1313/tags/wordpress/">WordPress</a>
+              <a class="tag" href="http://localhost:1313/tags/mariadb/">MariaDB</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="前言">前言</h2>
+<p>大部分用 Docker 搭建 WordPress 的方法都是用 MySQL 数据库。</p>
+<p>MairaDB 是 MySQL 的一个分支，主要由开源社区在维护，采用 GPL 授权许可。 MariaDB 的目的是完全兼容 MySQL，而且 MairaDB 的性能完全不输给 MySQL。</p>
+<p>对于大多数应用程序和目的，尤其是 WordPress，用 MariaDB 替换 MySQL 基本上不存在兼容问题。</p>
+<p><del>所以 WordPress 什么时候能原生支持 ProgreSQL</del></p>
+<h2 id="为什么开始使用-docker-搭建-wordpress">为什么开始使用 Docker 搭建 WordPress</h2>
+<p><strong>优点：</strong></p>
+<ul>
+<li>搭建、升级方便，命令简单，不用自行配置环境。</li>
+<li>迁移和备份操作方便。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>修改相关配置不够方便</li>
+<li>需要学习 Docker 相关命令</li>
+</ul>
+<h2 id="准备工作">准备工作</h2>
+<ul>
+<li>需要有一台 VPS，本文选择的系统是 Debian11</li>
+<li>需要准备一个域名，建议长期持有，并配置好解析</li>
+</ul>
+<h3 id="安装-docker-和-docker-compose">安装 Docker 和 Docker-compose</h3>
+<p>这里第一步使用了官方提供的一键脚本安装 Docker。如果你对此感到不放心，请通过<a href="https://docs.docker.com/engine/install/debian/">官网步骤</a>自行安装。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ bash &lt;<span style="color:#f92672">(</span>curl -L https://get.docker.com/<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ sudo curl -L <span style="color:#e6db74">&#34;https://github.com/docker/compose/releases/download/latest/docker-compose-</span><span style="color:#66d9ef">$(</span>uname -s<span style="color:#66d9ef">)</span><span style="color:#e6db74">-</span><span style="color:#66d9ef">$(</span>uname -m<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> -o /usr/local/bin/docker-compose
+</span></span><span style="display:flex;"><span>$ sudo chmod +x /usr/local/bin/docker-compose
+</span></span></code></pre></div><h3 id="拉取镜像">拉取镜像</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir -p /home/WordPress
+</span></span><span style="display:flex;"><span>$ cd /home/WordPress
+</span></span></code></pre></div><p>然后用你习惯的编辑器创建 docker-compose.yml 文件并写入以下内容(请自行生成数据库密码)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mariadb</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">wordpress_db</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">wordpress_networks</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./db:/var/lib/mysql</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD-SHELL&#34;</span>, <span style="color:#e6db74">&#34;mysqladmin ping -P 3306 -p设置的数据库密码 | grep &#39;mysqld is alive&#39; || exit 1&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">15s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">retries</span>: <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MARIADB_ROOT_PASSWORD=</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MARIADB_DATABASE=WordPress</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MARIADB_USER=wordpress</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">MARIADB_PASSWORD=</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">logging</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">driver</span>: <span style="color:#e6db74">&#34;json-file&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">options</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">max-size</span>: <span style="color:#e6db74">&#34;10m&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">wordpress</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">wordpress:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">wordpress_service</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">wordpress_networks</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;127.0.0.1:888:80&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">./html:/var/www/html</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#34;CMD&#34;</span>, <span style="color:#e6db74">&#34;curl&#34;</span>, <span style="color:#e6db74">&#34;-f&#34;</span>, <span style="color:#e6db74">&#34;http://localhost:80&#34;</span>]
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">interval</span>: <span style="color:#ae81ff">15s</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">retries</span>: <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">WORDPRESS_DB_HOST</span>: <span style="color:#ae81ff">db</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">WORDPRESS_DB_NAME</span>: <span style="color:#ae81ff">WordPress</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">WORDPRESS_DB_USER</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">WORDPRESS_DB_PASSWORD</span>: 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">db</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">wordpress_networks</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">external</span>: <span style="color:#66d9ef">false</span>
+</span></span></code></pre></div><p>保存退出后输入以下命令</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ docker-compose up -d
+</span></span></code></pre></div><p>可以通过以下命令查看 Docker 容器是否正常</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ docker ps -a ｜ grep wordpress
+</span></span></code></pre></div><h3 id="安装并配置-caddy">安装并配置 Caddy</h3>
+<p>在这一步之前，请记得在您的 DNS 解析服务商设置处添加 A / AAAA Record 解析到您的服务器 IP</p>
+<ul>
+<li>安装 <a href="https://caddyserver.com/docs/install">Caddy</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+</span></span><span style="display:flex;"><span>$ curl -1sLf <span style="color:#e6db74">&#39;https://dl.cloudsmith.io/public/caddy/stable/gpg.key&#39;</span> | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+</span></span><span style="display:flex;"><span>$ curl -1sLf <span style="color:#e6db74">&#39;https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt&#39;</span> | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+</span></span><span style="display:flex;"><span>$ sudo apt update
+</span></span><span style="display:flex;"><span>$ sudo apt install caddy
+</span></span></code></pre></div><ul>
+<li>配置 Caddyfile</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd /etc/caddy
+</span></span><span style="display:flex;"><span>nano Caddyfile
+</span></span></code></pre></div><p>Caddyfile 配置文件 (仅供参考，请将 blog.example.org 修改为你设置的域名)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#ae81ff">blog.example.org {</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">encode gzip zstd</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">tls {</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">protocols tls1.3</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">log {</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">level info</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">output file /var/log/caddy/blog.log {</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#ae81ff">roll_size 10MB</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#ae81ff">roll_keep 10</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">header {</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">Strict-Transport-Security &#34;max-age=63072000; includeSubDomains; preload&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">Referrer-Policy strict-origin-when-cross-origin</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-Permitted-Cross-Domain-Policies &#34;none&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-Frame-Options SAMEORIGIN</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-Content-Type-Options nosniff</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-XSS-Protection &#34;1; mode=block&#34;</span>
+</span></span><span style="display:flex;"><span>		-<span style="color:#ae81ff">Server</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">reverse_proxy localhost:888</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后检查 Caddy 配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ caddy validate --config /etc/caddy/Caddyfile
+</span></span></code></pre></div><p>输出如下内容则表示配置正确：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">2023/01/17 08:48:27.552 INFO    using provided configuration    {&#34;config_file&#34;: &#34;/etc/caddy/Caddyfile&#34;, &#34;config_adapter&#34;: &#34;&#34;}
+2023/01/17 08:48:27.585 INFO    tls.cache.maintenance   started background certificate maintenance      {&#34;cache&#34;: &#34;0xc0002e4620&#34;}
+2023/01/17 08:48:27.586 INFO    http    enabling automatic HTTP-&gt;HTTPS redirects        {&#34;server_name&#34;: &#34;srv0&#34;}
+2023/01/17 08:48:27.591 INFO    tls.cache.maintenance   stopped background certificate maintenance      {&#34;cache&#34;: &#34;0xc0002e4620&#34;}
+Valid configuration
+</code></pre><p>可使用以下命令美化你的 Caddyfile 文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ caddy validate --config /etc/caddy/Caddyfile
+</span></span></code></pre></div><p>最后重启 Caddy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ systemctl restart caddy
+</span></span></code></pre></div><p>等待一会儿后打开浏览器就可以查看 <a href="https://blog.example.org">https://blog.example.org</a> 即可看到 SSL 证书已经自动部署，然后就可以初始化你的 WordPress 站点了</p>
+<h3 id="修改-uploadsini-配置以便上传主题">修改 uploads.ini 配置以便上传主题</h3>
+<p>在 WordPress 目前下创建 <code>uploads.ini</code> 文件并写入以下配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">file_uploads</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">on</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upload_max_filesize</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">100M</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">post_max_size</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">100M</span>
+</span></span></code></pre></div>
+
+
+
+<style>
+    :root {
+        --warning-color: #de3636;
+    }
+
+    .notice {
+        margin-block: 1em 1em;
+        border-left-width: 5px;
+        border-left-style: solid;
+    }
+
+    .notice-title {
+        font-weight: 700;
+        margin-bottom: 0.5em;
+    }
+
+    .notice {
+        padding: 1em 1.5em;
+    }
+
+    .notice-body p:first-child {
+        margin-block-start: 0;
+    }
+
+    .notice-body p:last-child {
+        margin-block-end: 0;
+    }
+
+    .notice-body code {
+        color: var(--text-color)
+    }
+
+    .notice-icon {
+        width: 1em;
+        height: 1em;
+        margin-right: 0.4em;
+    }
+
+     
+    .notice.tip {
+        border-left-color: #79cf79;
+        background-color: #79cf791f;
+    }
+
+    .notice-title.tip {
+        color: #79cf79;
+    }
+
+     
+    .notice.note {
+        border-left-color: #58acf0;
+        background-color: #58acf01f;
+    }
+
+    .notice-title.note {
+        color: #58acf0;
+    }
+
+     
+    .notice.warning {
+        border-left-color: #de3636;
+        background-color: #de36361f;
+    }
+    
+    .notice-title.warning {
+        color: #de3636;
+    }
+
+     
+</style>
+
+<div class="notice tip">
+    <div class="notice-title tip">
+        
+    </div>
+    <div class="notice-body tip">
+        提示：使用 Cloudflare Free 计划并使用 CDN 无法上传超过 100M 大小的主题 <del>(话说有这么大的主题吗）</del>
+    </div>
+</div>
+
+
+<p>然后修改 docker-compose.yml，在 wordpress 容器 volumes 新增下列配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span>- <span style="color:#ae81ff">./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini</span>
+</span></span></code></pre></div><p>然后重启容器即可</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ docker-compose down <span style="color:#f92672">&amp;&amp;</span> docker-compose up -d
+</span></span></code></pre></div><hr>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://caddyserver.com/docs/">Caddy Server</a></li>
+<li><a href="https://docs.docker.com/engine/install/debian/">Docker Install</a></li>
+<li><a href="https://stackoverflow.com/questions/42983276/wordpress-docker-wont-increase-upload-limit">Wordpress Docker won&rsquo;t increase upload limit</a></li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

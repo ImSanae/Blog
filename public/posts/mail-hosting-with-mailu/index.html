@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <title>Mailu 搭建邮局的不完全指南 // Sanae&#39;s Blog</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.123.7">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Sanae" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.5b1fcc8902588589c4767187402a3c29f8b8d7a6fdef6d9f8f77045bb0d14fee.css" />
+    
+
+    
+    <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Mailu 搭建邮局的不完全指南"/>
+<meta name="twitter:description" content="Mailu 是一个开源的邮件服务，需要使用 Docker 安装。 系统要求 Mailu 基于 Docker，所以几乎可以在所有发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，"/>
+
+    <meta property="og:title" content="Mailu 搭建邮局的不完全指南" />
+<meta property="og:description" content="Mailu 是一个开源的邮件服务，需要使用 Docker 安装。 系统要求 Mailu 基于 Docker，所以几乎可以在所有发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/mail-hosting-with-mailu/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-02-03T00:00:00+00:00" /><meta property="og:site_name" content="Sanae&#39;s Blog" />
+
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="http://localhost:1313/"><img class="app-header-avatar" src="/avatar.jpg" alt="Sanae" /></a>
+      <span class="app-header-title">Sanae&#39;s Blog</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/about/">About</a>
+             - 
+          
+          <a class="app-header-menu-item" href="https://sanae.im/privacy/">Privacy</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p>Maybe I can cause miracles to occur</p>
+      <div class="app-header-social">
+        
+          <a href="mailto:hi@sanae.im" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Mail.Ru</title><path d="M15.61 12c0 1.99-1.62 3.61-3.61 3.61-1.99 0-3.61-1.62-3.61-3.61 0-1.99 1.62-3.61 3.61-3.61 1.99 0 3.61 1.62 3.61 3.61M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12c2.424 0 4.761-.722 6.76-2.087l.034-.024-1.617-1.879-.027.017A9.494 9.494 0 0 1 12 21.54c-5.26 0-9.54-4.28-9.54-9.54 0-5.26 4.28-9.54 9.54-9.54 5.26 0 9.54 4.28 9.54 9.54a9.63 9.63 0 0 1-.225 2.05c-.301 1.239-1.169 1.618-1.82 1.568-.654-.053-1.42-.52-1.426-1.661V12A6.076 6.076 0 0 0 12 5.93 6.076 6.076 0 0 0 5.93 12 6.076 6.076 0 0 0 12 18.07a6.02 6.02 0 0 0 4.3-1.792 3.9 3.9 0 0 0 3.32 1.805c.874 0 1.74-.292 2.437-.821.719-.547 1.256-1.336 1.553-2.285.047-.154.135-.504.135-.507l.002-.013c.175-.76.253-1.52.253-2.457 0-6.617-5.383-12-12-12"/></svg>
+</span>
+          </a>
+        
+          <a href="https://f.sanae.im/@hi" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg fill="#F07A5B" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Firefish</title><path d="M16.771 0c-.68-.016-1.342.507-1.342 1.304V7.27c0 .719.582 1.301 1.3 1.301h5.967c1.16 0 1.74-1.401.92-2.22L17.65.383a1.275 1.275 0 0 0-.879-.383ZM6.573.106c-.672-.017-1.326.5-1.326 1.287v5.892c0 .71.575 1.285 1.285 1.285h5.892c1.145 0 1.718-1.384.908-2.194L7.44.484a1.259 1.259 0 0 0-.867-.379ZM1.286 10.287c-.71 0-1.286.576-1.286 1.286v11.142C0 23.425.576 24 1.286 24h11.143c.71 0 1.285-.575 1.285-1.285V11.573c0-.71-.575-1.286-1.285-1.286zm15.485 0c-.68-.017-1.342.507-1.342 1.304v5.966c0 .718.582 1.3 1.3 1.3h5.967c1.16 0 1.74-1.4.92-2.22L17.65 10.67a1.275 1.275 0 0 0-.879-.384zM3.43 17.144a1.714 1.714 0 1 1 0 3.428 1.714 1.714 0 0 1 0-3.428zm4.285 0a1.714 1.714 0 1 1 0 3.428 1.714 1.714 0 0 1 0-3.428z"/></svg>
+</span>
+          </a>
+        
+          <a href="https://github.com/ImSanae" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg fill="#181717" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+</span>
+          </a>
+        
+          <a href="https://matrix.to/#/@isanae:mozilla.org" target="_blank" rel="noreferrer noopener me">
+            <span class="icon">
+  <svg fill="#000000" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Matrix</title><path d="M.632.55v22.9H2.28V24H0V0h2.28v.55zm7.043 7.26v1.157h.033c.309-.443.683-.784 1.117-1.024.433-.245.936-.365 1.5-.365.54 0 1.033.107 1.481.314.448.208.785.582 1.02 1.108.254-.374.6-.706 1.034-.992.434-.287.95-.43 1.546-.43.453 0 .872.056 1.26.167.388.11.716.286.993.53.276.245.489.559.646.951.152.392.23.863.23 1.417v5.728h-2.349V11.52c0-.286-.01-.559-.032-.812a1.755 1.755 0 0 0-.18-.66 1.106 1.106 0 0 0-.438-.448c-.194-.11-.457-.166-.785-.166-.332 0-.6.064-.803.189a1.38 1.38 0 0 0-.48.499 1.946 1.946 0 0 0-.231.696 5.56 5.56 0 0 0-.06.785v4.768h-2.35v-4.8c0-.254-.004-.503-.018-.752a2.074 2.074 0 0 0-.143-.688 1.052 1.052 0 0 0-.415-.503c-.194-.125-.476-.19-.854-.19-.111 0-.259.024-.439.074-.18.051-.36.143-.53.282-.171.138-.319.337-.439.595-.12.259-.18.6-.18 1.02v4.966H5.46V7.81zm15.693 15.64V.55H21.72V0H24v24h-2.28v-.55z"/></svg>
+</span>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Mailu 搭建邮局的不完全指南</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-svglink">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+          Feb 3, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-svglink">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+          6 min read
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-svglink">
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+</svg>
+              <a class="tag" href="http://localhost:1313/tags/docker/">Docker</a>
+              <a class="tag" href="http://localhost:1313/tags/mail/">Mail</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <p><a href="https://mailu.io">Mailu</a> 是一个开源的邮件服务，需要使用 Docker 安装。</p>
+<h2 id="系统要求">系统要求</h2>
+<p>Mailu 基于 Docker，所以几乎可以在所有发行版上安装使用。请确保您的服务器有 1 GB 或更大的内存，并拥有独立的 IP 地址。</p>
+<p>您需要确保您 vps 的 25 端口是开放的且未被占用，可以使用 Telnet 命令测试是否开放：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ telnet smtp.aol.com <span style="color:#ae81ff">25</span>
+</span></span></code></pre></div><p>如果出现以下信息，则说明 25 端口是开放的：</p>
+<pre tabindex="0"><code>Trying 87.248.97.31...
+Connected to smtp.aol.g03.yahoodns.net.
+Escape character is &#39;^]&#39;.
+220 smtp.mail.yahoo.com ESMTP ready
+</code></pre><p>否则说明您的 25 端口被服务商屏蔽，您需要向服务器申请开放 25 端口（建议在申请前查询 IP 是否被列入黑名单，被列入黑名单的 IP 发件容易进入垃圾箱）</p>
+<p>本文使用的系统为 Debian11。</p>
+<h2 id="安装-mailu">安装 Mailu</h2>
+<h3 id="设置-dns-记录">设置 DNS 记录</h3>
+<p>DNS 记录的设置分为两部分，此部分为搭建邮局前设置（请将域名替换为您自己的域名）</p>
+<ul>
+<li>将域名 mail.sanae.im 设置 A / AAAA 记录，解析到服务器 IP</li>
+<li>将 sanae.im 设置 MX 记录，优先级为 10，解析值为 mail.sanae.im</li>
+</ul>
+<p>然后您需要在您的 VPS 服务商处设置 rDNS 记录，将 IP 解析到 mail.sanae.im（如果您的服务商不支持手动设置请发工单询问，无 rDNS 记录会增加发出的邮件进入垃圾箱的概率）</p>
+<p>设置好相关 DNS 记录后就可以开始部署 Mailu 邮局服务了。</p>
+<h3 id="安装-docker-和-docker-compose">安装 Docker 和 Docker-Compose</h3>
+<p>这里使用了官方提供的一键脚本安装 Docker。如果你对此感到不放心，请通过<a href="https://docs.docker.com/engine/install/debian/">官网步骤</a>自行安装。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ bash &lt;<span style="color:#f92672">(</span>curl -L https://get.docker.com/<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$ sudo curl -L <span style="color:#e6db74">&#34;https://github.com/docker/compose/releases/download/latest/docker-compose-</span><span style="color:#66d9ef">$(</span>uname -s<span style="color:#66d9ef">)</span><span style="color:#e6db74">-</span><span style="color:#66d9ef">$(</span>uname -m<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> -o /usr/local/bin/docker-compose
+</span></span><span style="display:flex;"><span>$ sudo chmod +x /usr/local/bin/docker-compose
+</span></span></code></pre></div><h3 id="生成-mailu-配置文件">生成 Mailu 配置文件</h3>
+<p>Mailu 官方提供了自动生成配置文件的网页，我们使用<a href="https://setup.mailu.io">这个网页</a>来生成相关配置文件（编写本文时 Mailu 最新正式版本号为 v1.9）</p>
+<h4 id="step1">Step1</h4>
+<p>第一步是 Docker 管理方式，请选择 Compose，Stack 模式已被弃用</p>
+<p><img src="/img/Mailu/mailu1.png" alt="Step1"></p>
+<h4 id="step2">Step2</h4>
+<p>第二步需要设置路径和相关域名消息，请按照下图填写并替换为您自己的域名</p>
+<ul>
+<li>Mail storage path 请根据个人偏好填写（此处选择的目录为 <code>/home/Mailu</code>）</li>
+<li>Main mail domain and server display name 请填写您邮箱的后缀地址</li>
+<li>Postmaster local part 请填写您配置邮局的管理员邮箱地址（推荐填写 i / hi）</li>
+<li>Choose how you wish to handle security <a href="https://mailu.io/1.9/compose/setup.html#tls-certificates">TLS certificates</a> 推荐选择 mail，如果您只想一键为 Mailu 配置 TLS 则可以选择 letsencrypt（此选项会在每次证书丢失重装后重新申请证书，请注意 Let&rsquo;s Encrypt 的速率限制）</li>
+<li>Authentication rate limit / Authentication rate limit per user / Outgoing message rate limit 请根据您的需求进行修改，不建议设置过高</li>
+<li>Opt-out of statistics 是否不上报相关统计数据请自行选择，从隐私角度考虑勾选以退出统计</li>
+<li>Website name 可根据您的偏好进行修改</li>
+<li>Linked Website URL 修改为 <a href="https://mail.sanae.im">https://mail.sanae.im</a> （请将域名替换为您自己的域名）</li>
+<li>Enable the admin UI (and path to the admin UI) 请勾选启用 admin UI（path 路径可根据个人偏好进行修改）</li>
+</ul>
+<p><img src="/img/Mailu/mailu2.png" alt="Step2"></p>
+<h4 id="step3">Step3</h4>
+<p>第三步是选择网页邮箱的面板，此步骤可选择 none / Roundcube / Rainloop，请根据个人偏好选择。我选择的是 Roudcube。</p>
+<p>下面的三个选项分别是杀毒服务、WebDAV 和邮件代收，请注意杀毒服务需要额外至少 1 GB 的内存，如果需要勾选先请确保您的服务器内存足够运行 <code>ClamAV</code>，其他两项请根据自己的偏好勾选。</p>
+<p><img src="/img/Mailu/mailu3.png" alt="Step3"></p>
+<h4 id="step4">Step4</h4>
+<p>第四步需要配置 IP 与主机名</p>
+<ul>
+<li>IPv4 listen address 请填写您服务器对外的 IPv4 地址</li>
+<li>Enable IPv6 请谨慎勾选（如果您的服务器拥有公网 IPv6 且为 Docker 启用 IPv6 则推荐勾选以启用 IPv6）</li>
+<li>IPv6 listen address 如果您上一步选择了 Enable IPv6 请填写您服务器对外的 IPv6 地址</li>
+<li>Enable an internal DNS resolver (unbound) 建议勾选</li>
+<li>Public hostnames 填写 mail.sanae.im （请将域名替换为您自己的域名）</li>
+</ul>
+<p><img src="/img/Mailu/mailu4.png" alt="Step4"></p>
+<h4 id="step5">Step5</h4>
+<p>第五步是选择数据库，此处选择最简单的 sqlit 即可。您也可以根据偏好选择 postgresql / mysql</p>
+<p><img src="/img/Mailu/mailu5.png" alt="Step5"></p>
+<h3 id="修改-mailu-配置文件">修改 Mailu 配置文件</h3>
+<p>配置完成后点击 Setup Mailu，就可以得到自动生成好的配置文件了，请先将 docker-compose.yml 和 mailu.env 下载到本地进行修改</p>
+<p>推荐添加为容器添加 <code>container_name</code> 配置便于后续使用 docker 相关命令</p>
+<p>如果您在第二步 <code>Choose how you wish to handle security</code> 中选择的是 <code>letsencrypt</code> ，请不要修改 docker-compose.yml 中 front 部分的 ports 配置（此选项会占用 80 / 443 端口）。</p>
+<p>此时可以将 docker-compose.yml 和 mailu.env 上传到服务器对应目录（目录为生成 Mailu 配置文件中第二步 Mail Storage path 填写的目录）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir /home/Mailu
+</span></span></code></pre></div><p>修改后的 docker-compose 配置文件如下（请根据自行生成的配置文件进行修改，此配置文件仅供参考）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;2.2&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># External dependencies</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">redis:7-alpine</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_redis</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">healthcheck</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">test</span>: [<span style="color:#e6db74">&#39;CMD&#39;</span>, <span style="color:#e6db74">&#39;redis-cli&#39;</span>, <span style="color:#e6db74">&#39;ping&#39;</span>]
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/redis:/data&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Core services</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">front</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:-1.9}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_front</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env_file</span>: <span style="color:#ae81ff">mailu.env</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">logging</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">json-file</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:88:80&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:25:25&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:25:25&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:465:465&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:465:465&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:587:587&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:587:587&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:110:110&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:110:110&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:995:995&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:995:995&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:143:143&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:143:143&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;1.1.1.1:993:993&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;2606:4700:4700::1111:993:993&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/certs:/certs&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/overrides/nginx:/overrides:ro&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">admin</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:-1.9}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_admin</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env_file</span>: <span style="color:#ae81ff">mailu.env</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/data:/data&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/dkim:/dkim&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">redis</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">imap</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:-1.9}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_imap</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env_file</span>: <span style="color:#ae81ff">mailu.env</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/mail:/mail&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/overrides/dovecot:/overrides:ro&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">front</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">smtp</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}postfix:${MAILU_VERSION:-1.9}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_smtp</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env_file</span>: <span style="color:#ae81ff">mailu.env</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/mailqueue:/queue&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/overrides/postfix:/overrides:ro&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">front</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">antispam</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}rspamd:${MAILU_VERSION:-1.9}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">hostname</span>: <span style="color:#ae81ff">antispam</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_antispam</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env_file</span>: <span style="color:#ae81ff">mailu.env</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/filter:/var/lib/rspamd&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/overrides/rspamd:/etc/rspamd/override.d:ro&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">front</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Optional services</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Webmail</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">webmail</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">${DOCKER_ORG:-mailu}/${DOCKER_PREFIX:-}roundcube:${MAILU_VERSION:-1.9}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">mailu_webmail</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env_file</span>: <span style="color:#ae81ff">mailu.env</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/webmail:/data&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/Mailu/overrides/roundcube:/overrides:ro&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">imap</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span><span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">default</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enable_ipv6</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">bridge</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ipam</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">default</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">config</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">subnet</span>: <span style="color:#ae81ff">192.168.203.0</span><span style="color:#ae81ff">/24</span>
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">subnet</span>: <span style="color:#ae81ff">fd56:c40b:eb8e:beef::/64</span>
+</span></span></code></pre></div>
+
+
+
+<style>
+    :root {
+        --warning-color: #de3636;
+    }
+
+    .notice {
+        margin-block: 1em 1em;
+        border-left-width: 5px;
+        border-left-style: solid;
+    }
+
+    .notice-title {
+        font-weight: 700;
+        margin-bottom: 0.5em;
+    }
+
+    .notice {
+        padding: 1em 1.5em;
+    }
+
+    .notice-body p:first-child {
+        margin-block-start: 0;
+    }
+
+    .notice-body p:last-child {
+        margin-block-end: 0;
+    }
+
+    .notice-body code {
+        color: var(--text-color)
+    }
+
+    .notice-icon {
+        width: 1em;
+        height: 1em;
+        margin-right: 0.4em;
+    }
+
+     
+    .notice.tip {
+        border-left-color: #79cf79;
+        background-color: #79cf791f;
+    }
+
+    .notice-title.tip {
+        color: #79cf79;
+    }
+
+     
+    .notice.note {
+        border-left-color: #58acf0;
+        background-color: #58acf01f;
+    }
+
+    .notice-title.note {
+        color: #58acf0;
+    }
+
+     
+    .notice.warning {
+        border-left-color: #de3636;
+        background-color: #de36361f;
+    }
+    
+    .notice-title.warning {
+        color: #de3636;
+    }
+
+     
+</style>
+
+<div class="notice note">
+    <div class="notice-title note">
+        
+    </div>
+    <div class="notice-body note">
+        注意：编写本文是 Mailu 的最新版本号为 v1.9，如您使用的版本号高于此版本请优先参考官方文档
+    </div>
+</div>
+
+
+<h3 id="配置-tls">配置 TLS</h3>
+<p>如果您在第二步 <code>Choose how you wish to handle security</code> 中选择的是 letsencrypt ，请跳过此部分内容。</p>
+<h4 id="获取-tls-证书">获取 TLS 证书</h4>
+<p>本文使用的是 Caddy 以配置反向代理和获取 TLS 证书，如需自定义编译 Caddy 推荐参考 <a href="https://u.sb/xcaddy/">烧饼博客</a> 和 <a href="https://catcat.cc/post/h9bti/">双猫CC</a>。</p>
+<ul>
+<li>安装 <a href="https://caddyserver.com/docs/install">Caddy</a></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+</span></span><span style="display:flex;"><span>$ curl -1sLf <span style="color:#e6db74">&#39;https://dl.cloudsmith.io/public/caddy/stable/gpg.key&#39;</span> | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+</span></span><span style="display:flex;"><span>$ curl -1sLf <span style="color:#e6db74">&#39;https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt&#39;</span> | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+</span></span><span style="display:flex;"><span>$ sudo apt update
+</span></span><span style="display:flex;"><span>$ sudo apt install caddy
+</span></span></code></pre></div><ul>
+<li>配置 Caddyfile</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd /etc/caddy
+</span></span><span style="display:flex;"><span>nano Caddyfile
+</span></span></code></pre></div><p>Caddyfile 配置文件 (仅供参考，请将 blog.example.org 修改为你设置的域名)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#ae81ff">mail.example.org {</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">encode gzip zstd</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">tls {</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">protocols tls1.3</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">log {</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">level info</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">output file /var/log/caddy/blog.log {</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#ae81ff">roll_size 10MB</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#ae81ff">roll_keep 10</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">header {</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">Strict-Transport-Security &#34;max-age=63072000; includeSubDomains; preload&#34;</span> <span style="color:#75715e"># HSTS</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">Referrer-Policy strict-origin-when-cross-origin</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-Permitted-Cross-Domain-Policies &#34;none&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-Frame-Options SAMEORIGIN</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-Content-Type-Options nosniff</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#ae81ff">X-XSS-Protection &#34;1; mode=block&#34;</span>
+</span></span><span style="display:flex;"><span>		-<span style="color:#ae81ff">Server</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ae81ff">reverse_proxy localhost:88</span> <span style="color:#75715e"># 此处为 Mailu 的配置文件 docker-compose.yml 中 front 部分 ports 中 80 端口的映射端口</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后检查 Caddy 配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ caddy validate --config /etc/caddy/Caddyfile
+</span></span></code></pre></div><p>输出类似如下内容（没有出现 Error）则表示配置正确：</p>
+<pre tabindex="0"><code class="language-log" data-lang="log">2023/01/31 04:37:47.552 INFO    using provided configuration    {&#34;config_file&#34;: &#34;/etc/caddy/Caddyfile&#34;, &#34;config_adapter&#34;: &#34;&#34;}
+2023/01/31 04:37:47.585 INFO    tls.cache.maintenance   started background certificate maintenance      {&#34;cache&#34;: &#34;0xc0002e4620&#34;}
+2023/01/31 04:37:47.586 INFO    http    enabling automatic HTTP-&gt;HTTPS redirects        {&#34;server_name&#34;: &#34;srv0&#34;}
+2023/01/31 04:37:47.591 INFO    tls.cache.maintenance   stopped background certificate maintenance      {&#34;cache&#34;: &#34;0xc0002e4620&#34;}
+Valid configuration
+</code></pre><p>可使用以下命令美化你的 Caddyfile 文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ caddy fmt /etc/caddy/Caddyfile --overwrite
+</span></span></code></pre></div><p>最后重启 Caddy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ systemctl restart caddy
+</span></span></code></pre></div><h3 id="配置证书">配置证书</h3>
+<p>Caddy 的默认证书目录为 <code>/var/lib/caddy/.local/share/caddy/certificates/</code></p>
+<p>执行（此处使用绝对路径,请将路径替换为您的证书路径）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.sanae.im/mail.sanae.im.crt /home/Mailu/certs/cert.pem <span style="color:#75715e"># 公钥</span>
+</span></span><span style="display:flex;"><span>cp /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.sanae.im/mail.sanae.im.key /home/Mailu/certs/key.pem <span style="color:#75715e"># 私钥</span>
+</span></span></code></pre></div><h3 id="运行-mailu-服务器">运行 Mailu 服务器</h3>
+<p>通过 SSH 连接上您的服务器，执行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd /home/Mailu
+</span></span><span style="display:flex;"><span>$ docker-compose -p mailu up -d
+</span></span></code></pre></div><p>初次使用时会拉取多个 Docker 镜像，请耐心等待。可以通过以下命令查看 Docker 容器是否正常：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ docker ps -a | grep mailu
+</span></span></code></pre></div><p>若您本地已经拉取过 Mailu 相关镜像但不是<a href="https://github.com/Mailu/Mailu/releases">最新的版本</a>，请执行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>docker-compose pull <span style="color:#f92672">&amp;&amp;</span> docker-compose -p mailu up -d
+</span></span></code></pre></div><p>如果 mail_front 容器的状态为 healthy 即为正常，此时可以为 Mailu 创建一个管理员账户：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ docker-compose -p mailu exec admin flask mailu admin hi sanae.im <span style="color:#e6db74">&#39;PASSWORD&#39;</span>
+</span></span></code></pre></div><p>此命令创建了一位用户名为 <a href="mailto:hi@sanae.im">hi@sanae.im</a> 密码为 PASSWORD 的管理员用户。请替换为您自己设置的值，为防止暴力破解推荐设置包含特殊字符的复杂密码（推荐使用 <a href="https://1password.com/password-generator/">1PassWord</a> 提供的密码生成器生成安全复杂的密码）。</p>
+<h2 id="配置-mailu">配置 Mailu</h2>
+<p><img src="/img/Mailu/mailu_login.png" alt="login"></p>
+<p>此时打开浏览器访问您设置的邮局服务地址就可以跳转到 Mailu 登录面板了，请输入上一步创建的管理员账户信息登录（可通过右上角切换成中文）。</p>
+<p><img src="/img/Mailu/mailu_domains.png" alt="domain"></p>
+<p>点击左侧的邮件域，可管理所添加的邮箱域名。点击右上角的 New Domain （新域） 可添加新域名；在操作栏选择详细信息可进入域名详情页；在管理栏点击用户可查询当前此域名下创建的用户以及添加新用户。</p>
+<p><img src="/img/Mailu/mailu_users.png" alt="users"></p>
+<p>在用户列表页可为用户设置前缀、密码、显示名称、说明、是否允许 IMAP / POP3，请根据个人需求进行配置，最后请点击保存。</p>
+<p><img src="/img/Mailu/mailu_domainconfig.png" alt="domain"></p>
+<p>在域详细信息页，请先点击右上角的重新生成密钥再点击确定，即可生成 DKIM 记录，然后请在您的 DNS 服务商处根据提示添加相关 DNS 记录。全部添加完成后就完成了 Mailu 的搭建，应该可以正常收发信了。</p>
+<p>注意：如果您勾选了 Enable IPv6，请将 spf 记录修改为 <code>v=spf1 ip4:your_ipv4 ip6:your_ipv6 -all</code>（允许 <code>your_ipv4</code> 和 <code>your_ipv6</code> 传出邮件，其他的硬拒绝）</p>
+<h2 id="邮件测试">邮件测试</h2>
+<p>使用 <a href="https://www.mail-tester.com/">Newsletters spam test by mail-tester</a>，请使用您的邮箱地址向其发送一封测试邮件。如果您的配置无误且 IP 不在黑名单上，应该可以获得 10/10 分。</p>
+<hr>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://caddyserver.com/docs/">Caddy Server</a></li>
+<li><a href="https://www.cloudflare.com/learning/dns/dns-records/dns-dkim-record/">Cloudflare DNS-DKIM-Record</a></li>
+<li><a href="https://www.cloudflare.com/learning/dns/dns-records/dns-dmarc-record/">Cloudflare DNS-DMARC-Record</a></li>
+<li><a href="https://www.cloudflare.com/learning/dns/dns-records/dns-spf-record/">Cloudflare DNS-SPF-Record</a></li>
+<li><a href="https://docs.docker.com/engine/install/debian/">Docker Install</a></li>
+<li><a href="https://mailu.io/1.9/compose/setup.html">Mailu Docker-Compose Setup</a></li>
+<li><a href="https://mailu.io/1.9/reverse.html">Mailu Using an external reverse proxy</a></li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
